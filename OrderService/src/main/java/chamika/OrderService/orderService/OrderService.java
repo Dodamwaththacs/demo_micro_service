@@ -19,7 +19,7 @@ public class OrderService {
 
         // Call payment service
         restTemplate.postForObject(
-                "http://localhost:8081/api/payments",
+                "http://payment-service.microservices.svc.cluster.local:8081/api/payments",
                 new PaymentRequest(savedOrder.getId(), savedOrder.getTotalAmount()),
                 String.class
         );

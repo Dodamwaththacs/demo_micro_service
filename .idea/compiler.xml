@@ -10,6 +10,15 @@
         <module name="OrderService" />
         <module name="ApiGateway" />
       </profile>
+      <profile name="Annotation profile for PaymentService" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+        </processorPath>
+        <module name="PaymentService" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
@@ -17,6 +26,7 @@
       <module name="ApiGateway" options="-parameters" />
       <module name="EurekaServer" options="-parameters" />
       <module name="OrderService" options="-parameters" />
+      <module name="PaymentService" options="-parameters" />
     </option>
   </component>
 </project>

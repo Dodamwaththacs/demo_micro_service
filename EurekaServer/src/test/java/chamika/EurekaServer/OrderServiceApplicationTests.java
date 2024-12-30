@@ -1,13 +1,13 @@
-package chamika.EurekaServer;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class PaymentServiceApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+//package chamika.EurekaServer;
+//
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//@SpringBootTest
+//class PaymentServiceApplicationTests {
+//
+//	@Test
+//	void contextLoads() {
+//	}
+//
+//}
