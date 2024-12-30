@@ -25,8 +25,17 @@ jobs:
           cache: maven
 
       # Build and test Spring Boot applications
-      - name: Build with Maven
-        run: mvn -B clean install
+      - name: Build Order Service
+        run: mvn -B clean install -f OrderService/pom.xml
+
+      - name: Build Payment Service
+        run: mvn -B clean install -f PaymentService/pom.xml
+
+      - name: Build Eureka Server
+        run: mvn -B clean install -f EurekaServer/pom.xml
+
+      - name: Build API Gateway
+        run: mvn -B clean install -f ApiGateway/pom.xml
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
