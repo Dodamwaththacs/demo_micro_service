@@ -1,0 +1,165 @@
+name: Docker CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout source code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Build and test Spring Boot applications
+      - name: Build with Maven
+        run: mvn -B clean install
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build and push Docker images
+      - name: Build and push Order Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./OrderService
+          push: true
+          tags: chamika3131/order-service:latest
+          cache-from: type=registry,ref=chamika3131/order-service:latest
+          cache-to: type=inline
+
+      - name: Build and push Payment Service
+        uses: docker/build-push-action@v4
+        with:
+          context: ./PaymentService
+          push: true
+          tags: chamika3131/payment-service:latest
+          cache-from: type=registry,ref=chamika3131/payment-service:latest
+          cache-to: type=inline
+
+      - name: Build and push Eureka Server
+        uses: docker/build-push-action@v4
+        with:
+          context: ./EurekaServer
+          push: true
+          tags: chamika3131/eureka-server:latest
+          cache-from: type=registry,ref=chamika3131/eureka-server:latest
+          cache-to: type=inline
+
+      - name: Build and push API Gateway
+        uses: docker/build-push-action@v4
+        with:
+          context: ./ApiGateway
+          push: true
+          tags: chamika3131/api-gateway:latest
+          cache-from: type=registry,ref=chamika3131/api-gateway:latest
+          cache-to: type=inline
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to AWS Lightsail
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.LIGHTSAIL_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p /home/${{ secrets.SSH_USER }}/demo-microservices
+            cat << EOF > /home/${{ secrets.SSH_USER }}/demo-microservices/docker-compose.yml
+            version: '3.8'
+            
+            services:
+              eureka-server:
+                image: chamika3131/eureka-server:latest
+                container_name: eureka-server
+                ports:
+                  - "8761:8761"
+                healthcheck:
+                  test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+                  interval: 30s
+                  timeout: 10s
+                  retries: 5
+            
+              api-gateway:
+                image: chamika3131/api-gateway:latest
+                container_name: api-gateway
+                ports:
+                  - "80:80"
+                environment:
+                  - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+                depends_on:
+                  eureka-server:
+                    condition: service_healthy
+                healthcheck:
+                  test: ["CMD", "curl", "-f", "http://localhost:80/actuator/health"]
+                  interval: 30s
+                  timeout: 10s
+                  retries: 5
+            
+              order-service:
+                image: chamika3131/order-service:latest
+                container_name: order-service
+                ports:
+                  - "8080:8080"
+                environment:
+                  - SPRING_PROFILES_ACTIVE=prod
+                  - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+                depends_on:
+                  eureka-server:
+                    condition: service_healthy
+                healthcheck:
+                  test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+                  interval: 30s
+                  timeout: 10s
+                  retries: 5
+            
+              payment-service:
+                image: chamika3131/payment-service:latest
+                container_name: payment-service
+                ports:
+                  - "8081:8081"
+                environment:
+                  - SPRING_PROFILES_ACTIVE=prod
+                  - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+                depends_on:
+                  eureka-server:
+                    condition: service_healthy
+                healthcheck:
+                  test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+                  interval: 30s
+                  timeout: 10s
+                  retries: 5
+            
+            networks:
+              default:
+                name: microservices-network
+            EOF
+            
+            cd /home/${{ secrets.SSH_USER }}/demo-microservices
+            docker-compose pull
+            docker-compose down --remove-orphans
+            docker-compose up -d
+            docker system prune -f
