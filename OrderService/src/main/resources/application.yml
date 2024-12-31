@@ -20,4 +20,11 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server.microservices.svc.cluster.local:8761.
+      defaultZone: ${SERVER_URL:http://localhost:8761}/eureka/
+
+
+# environment variables
+
+payment:
+  service:
+    url: ${PAYMENT_SERVICE_URL}

@@ -29,3 +29,8 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     reactor.netty: DEBUG
+
+ereka:
+  client:
+    serviceUrl:
+      defaultZone: ${SERVER_URL:http://localhost:8761}/eureka/
