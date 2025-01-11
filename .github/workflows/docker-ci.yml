@@ -54,8 +54,8 @@ jobs:
         with:
           context: ./OrderService
           push: true
-          tags: chamika3131/order-service:${{ env.VERSION }}
-          cache-from: type=registry,ref=chamika3131/order-service:${{ env.VERSION }}
+          tags: chamika3131/order-service:latest
+          cache-from: type=registry,ref=chamika3131/order-service:latest
           cache-to: type=inline
 
       - name: Build and push Payment Service
@@ -63,8 +63,8 @@ jobs:
         with:
           context: ./PaymentService
           push: true
-          tags: chamika3131/payment-service:${{ env.VERSION }}
-          cache-from: type=registry,ref=chamika3131/payment-service:${{ env.VERSION }}
+          tags: chamika3131/payment-service:latest
+          cache-from: type=registry,ref=chamika3131/payment-service:latest
           cache-to: type=inline
 
       - name: Build and push Eureka Server
@@ -72,8 +72,8 @@ jobs:
         with:
           context: ./EurekaServer
           push: true
-          tags: chamika3131/eureka-server:${{ env.VERSION }}
-          cache-from: type=registry,ref=chamika3131/eureka-server:${{ env.VERSION }}
+          tags: chamika3131/eureka-server:latest
+          cache-from: type=registry,ref=chamika3131/eureka-server:latest
           cache-to: type=inline
 
       - name: Build and push API Gateway
@@ -81,8 +81,8 @@ jobs:
         with:
           context: ./ApiGateway
           push: true
-          tags: chamika3131/api-gateway:${{ env.VERSION }}
-          cache-from: type=registry,ref=chamika3131/api-gateway:${{ env.VERSION }}
+          tags: chamika3131/api-gateway:latest
+          cache-from: type=registry,ref=chamika3131/api-gateway:latest
           cache-to: type=inline
 
   deploy:
@@ -98,7 +98,7 @@ jobs:
           host: ${{ secrets.LIGHTSAIL_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml"  # Changed from docker-compose.yml to compose.yml
+          source: "docker-compose.yml"
           target: "/home/${{ secrets.SSH_USER }}/demo-microservices"
 
       - name: Deploy to AWS Lightsail
