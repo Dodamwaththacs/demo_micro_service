@@ -14,9 +14,9 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final RestTemplate restTemplate;
 
-    @Value("${payment.service.url:http://localhost:8081}")
-
+    @Value("${PAYMENT_SERVICE_URL}")
     private String paymentServiceUrl;
+
 
     public Order createOrder(Order order) {
         order.setStatus("PENDING");
@@ -24,8 +24,7 @@ public class OrderService {
 
         // Call payment service
         restTemplate.postForObject(
-                paymentServiceUrl +
-                "/api/payments",
+                paymentServiceUrl,
                 new PaymentRequest(savedOrder.getId(), savedOrder.getTotalAmount()),
                 String.class
         );
