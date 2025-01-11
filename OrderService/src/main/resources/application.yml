@@ -20,7 +20,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${SERVER_URL:http://localhost:8761}/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
 
 
 # environment variables

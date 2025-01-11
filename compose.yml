@@ -19,7 +19,7 @@ services:
     image: api-gateway:${VERSION:-latest}
     container_name: api-gateway
     environment:
-        - SERVER_URL=http://host.docker.internal:8761
+        - EUREKA_SERVER_URL=http://host.docker.internal:8761/eureka/
     ports:
       - "8080:8080"
     depends_on:
@@ -37,7 +37,8 @@ services:
       - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SERVER_URL=http://host.docker.internal:8761
+      - EUREKA_SERVER_URL=http://host.docker.internal:8761/eureka/
+      - PAYMENT_SERVICE_URL=http://host.docker.internal:8081/api/payments
 
     depends_on:
       - eureka-server
@@ -54,7 +55,7 @@ services:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SERVER_URL=http://host.docker.internal:8761
+      - EUREKA_SERVER_URL=http://host.docker.internal:8761/eureka/
 
     depends_on:
       - eureka-server
