@@ -55,7 +55,7 @@ jobs:
           context: ./OrderService
           push: true
           tags: chamika3131/order-service:latest
-          cache-from: type=registry,ref=chamika3131/order-service:${VERSION:-latest}
+          cache-from: type=registry,ref=chamika3131/order-service:latest
           cache-to: type=inline
 
       - name: Build and push Payment Service
@@ -64,7 +64,7 @@ jobs:
           context: ./PaymentService
           push: true
           tags: chamika3131/payment-service:latest
-          cache-from: type=registry,ref=chamika3131/payment-service:${VERSION:-latest}
+          cache-from: type=registry,ref=chamika3131/payment-service:latest
           cache-to: type=inline
 
       - name: Build and push Eureka Server
@@ -73,7 +73,7 @@ jobs:
           context: ./EurekaServer
           push: true
           tags: chamika3131/eureka-server:latest
-          cache-from: type=registry,ref=chamika3131/eureka-server:${VERSION:-latest}
+          cache-from: type=registry,ref=chamika3131/eureka-server:latest
           cache-to: type=inline
 
       - name: Build and push API Gateway
@@ -82,7 +82,7 @@ jobs:
           context: ./ApiGateway
           push: true
           tags: chamika3131/api-gateway:latest
-          cache-from: type=registry,ref=chamika3131/api-gateway:${VERSION:-latest}
+          cache-from: type=registry,ref=chamika3131/api-gateway:latest
           cache-to: type=inline
 
   deploy:
