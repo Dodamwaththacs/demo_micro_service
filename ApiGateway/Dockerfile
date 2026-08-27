@@ -9,5 +9,5 @@ RUN mvn -B clean package
 FROM openjdk:17-jdk-slim
 WORKDIR /src
 COPY --from=builder /build/target/ApiGateway-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8761
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]

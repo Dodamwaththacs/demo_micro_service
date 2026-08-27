@@ -14,7 +14,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final RestTemplate restTemplate;
 
-    @Value("${PAYMENT_SERVICE_URL}")
+    @Value("${payment.service.url}")
     private String paymentServiceUrl;
 
 
