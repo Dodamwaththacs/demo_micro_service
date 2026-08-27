@@ -6,6 +6,17 @@ spring:
       discovery:
         locator:
           enabled: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
       routes:
         - id: order-service
           uri: lb://ORDERSERVICE
