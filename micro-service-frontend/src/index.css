@@ -182,30 +182,31 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
 .arch-node {
   flex: 1;
-  min-width: 170px;
+  min-width: 150px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 0.9rem;
   text-align: center;
   transition: all 0.3s ease;
 }
 
 .arch-node.active {
   border-color: var(--primary);
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(99, 102, 241, 0.15);
   box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
 }
 
 .arch-node-name {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   margin-bottom: 0.2rem;
 }
 
@@ -220,6 +221,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.9rem;
 }
 
 /* Grid Layout */
@@ -320,29 +322,15 @@ body {
   margin-bottom: 0.4rem;
 }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.currency-symbol {
-  position: absolute;
-  left: 1rem;
-  color: var(--text-dim);
-  font-family: var(--font-mono);
-  font-weight: 600;
-}
-
 .form-input {
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 0.8rem 1rem 0.8rem 2.2rem;
+  padding: 0.8rem 1rem;
   color: var(--text-main);
-  font-family: var(--font-mono);
-  font-size: 1rem;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
   transition: all 0.2s ease;
 }
 
@@ -380,6 +368,51 @@ body {
 .btn-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:hover:not(:disabled) {
+  box-shadow: 0 5px 25px rgba(16, 185, 129, 0.5);
+}
+
+/* Credit Card Visualization */
+.credit-card-preview {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #065f46);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  color: white;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-chip {
+  width: 38px;
+  height: 28px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.card-number-display {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-holder-display {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
 }
 
 /* Orders List & Table */
@@ -472,7 +505,7 @@ body {
   gap: 0.35rem;
   padding: 0.25rem 0.6rem;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -490,7 +523,7 @@ body {
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
-.badge-completed {
+.badge-paid {
   background: var(--success-bg);
   color: var(--success);
   border: 1px solid rgba(16, 185, 129, 0.3);

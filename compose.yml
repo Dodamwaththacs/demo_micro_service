@@ -39,6 +39,7 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
       - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
       - PAYMENT_SERVICE_URL=http://payment-service:8081/api/payments
+      - PRODUCT_SERVICE_URL=http://product-service:8083/api/products
 
     depends_on:
       - eureka-server
@@ -53,6 +54,23 @@ services:
     container_name: payment-service
     ports:
       - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
+
+    depends_on:
+      - eureka-server
+
+  product-service:
+    build:
+      context: ./ProductService
+      dockerfile: Dockerfile
+      args:
+        - VERSION=${VERSION:-latest}
+    image: product-service:${VERSION:-latest}
+    container_name: product-service
+    ports:
+      - "8083:8083"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/

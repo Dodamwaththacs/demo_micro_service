@@ -16,4 +16,7 @@ public class Payment {
     private Double amount;
     private String status;
     private String paymentMethod;
+    private String cardHolder;
+    private String cardNumberLast4;
+    private String transactionId;
 }

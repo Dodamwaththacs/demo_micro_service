@@ -1,0 +1,6 @@
+chamika/ProductService/model/Product.class
+chamika/ProductService/service/ProductService.class
+chamika/ProductService/repository/ProductRepository.class
+chamika/ProductService/ProductServiceApplication.class
+chamika/ProductService/config/DataInitializer.class
+chamika/ProductService/controller/ProductController.class

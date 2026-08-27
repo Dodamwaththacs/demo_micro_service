@@ -1,8 +1,7 @@
 package chamika.OrderService.controller;
 
-import chamika.OrderService.orderService.OrderService;
 import chamika.OrderService.model.Order;
-import lombok.RequiredArgsConstructor;
+import chamika.OrderService.orderService.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,5 +22,13 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrder(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrder(id));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Order> updateOrderStatus(
+            @PathVariable Long id,
+            @RequestParam String status
+    ) {
+        return ResponseEntity.ok(orderService.updateOrderStatus(id, status));
     }
 }
