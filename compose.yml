@@ -1,4 +1,17 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./postgres-init/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+      - postgres-data:/var/lib/postgresql/data
+
   eureka-server:
     build:
       context: ./EurekaServer
@@ -40,9 +53,13 @@ services:
       - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
       - PAYMENT_SERVICE_URL=http://payment-service:8081/api/payments
       - PRODUCT_SERVICE_URL=http://product-service:8083/api/products
-
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/order_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       - eureka-server
+      - postgres
 
   payment-service:
     build:
@@ -57,9 +74,13 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
-
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/payment_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       - eureka-server
+      - postgres
 
   product-service:
     build:
@@ -74,9 +95,16 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
-
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/product_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       - eureka-server
+      - postgres
+
+volumes:
+  postgres-data:
 
 networks:
   default:
